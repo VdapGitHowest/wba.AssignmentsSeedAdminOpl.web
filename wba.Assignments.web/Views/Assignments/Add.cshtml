@@ -1,0 +1,17 @@
+﻿@model AssignmentsAddViewModel
+
+<h1>Register Projects</h1>
+
+<form asp-action="Add" asp-controller="Assignments" method="post">
+    <div class="form-group">
+        <label asp-for=@Model.SelectedProjectId>Choose a Project</label>
+        <select asp-for="@Model.SelectedProjectId" asp-items="@Model.Projects" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for=@Model.SelectedEmployees>Choose Employees</label>
+        <select asp-for="@Model.SelectedEmployees" asp-items="@Model.Employees" class="form-control" multiple></select>
+    </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+</form>

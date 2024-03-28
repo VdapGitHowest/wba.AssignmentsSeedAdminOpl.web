@@ -1,0 +1,24 @@
+﻿@model EmployeeAddViewModel
+<h1>Add New Employee to the company</h1>
+
+    <form asp-action="Add" asp-controller="Employees" method="post">
+
+        <div class="form-group">
+
+            <label asp-for=Name>Add new Employee Name</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for=Department>Add Department</label>
+            <input asp-for="Department"  class="form-control"/>
+        </div>
+        <div class="form-group">
+
+            <label asp-for=Position>Add Position</label>
+            <input asp-for="Position"  class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+
+

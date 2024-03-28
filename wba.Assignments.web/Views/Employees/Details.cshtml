@@ -1,0 +1,46 @@
+﻿@model EmployeeDetailViewModel
+
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row no-gutters">
+        <div class="col-md-4">
+            <img src="~/assets/profile-circle.svg" class="card-img" alt="...">
+        </div>
+        <div class="col-md-8">
+            <!--tips: add .text-center,.text-right to the .card to change card text alignment-->
+            <div class="card-body">
+                <h5 class="card-title">@Model.Name</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Position: @Model.Position</h6>
+                <p class="card-text">Department: @Model.Department</p>
+                <a href="#" class="btn btn-primary">Id: @Model.Id</a>
+                <h5>Assigned Projects</h5>
+
+                @if (Model.AssignedProjects.Count == 0)
+                {
+                    <p class="text-danger">No Assigned projects</p>
+                }
+                else
+                {
+                    <ul>
+                        @*list the projects here*@
+                        @foreach (ProjectsDetailViewModel project in Model.AssignedProjects)
+                        {
+                            <li>@project.Name <br /> (start: @project.StartDate.ToLongDateString())</li>
+                        }
+                    </ul>
+                }
+
+
+
+            </div>
+        </div>
+        <div>
+            <a asp-action="Update" asp-controller="Employees" class="btn btn-success float-end" asp-route-id="@Model.Id">Update</a>
+            <a asp-action="Delete" asp-controller="Employees" class="btn btn-danger float-end" asp-route-id="@Model.Id">Delete</a>
+
+        </div>
+
+    </div>
+</div>
+
+<a asp-action="Index" asp-controller="Employees">Back</a>
+

@@ -1,0 +1,40 @@
+﻿@model EmployeeIndexViewModel
+
+
+    <div class="mb-4">
+        <h1>
+            List of employees
+            <a asp-action="Add" asp-controller="Employees" class="btn btn-success">Add New Employee</a>
+        </h1>
+    </div>
+
+<div class="container">
+    <div class="row">
+
+        @foreach (EmployeeDetailViewModel employee in Model.Employees)
+
+
+
+        {
+            <div class="card m-3" style="max-width: 250px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="~/assets/profile-circle.svg" class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-12">
+                        <!--tips: add .text-center,.text-right to the .card to change card text alignment-->
+                        <div class="card-body">
+                            <h5 class="card-title">@employee.Name</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Position: @employee.Position</h6>
+                            <p class="card-text">Department: @employee.Department</p>
+                            <a asp-action="Details" asp-controller="Employees" asp-route-id="@employee.Id" class="btn btn-primary">Id: @employee.Id</a>
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+    </div>
+
+
