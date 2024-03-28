@@ -96,8 +96,16 @@ namespace wba.Assignments.web.Controllers
                 project.AssignedEmployees.Add(employee);
             }
 
-            // Save changes to persist the associations in the junction table
-            _assignmentDBContext.SaveChanges();
+            try
+            {
+                // Save changes to persist the associations in the junction table
+                _assignmentDBContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+                      
 
             return RedirectToAction("Index");
 
