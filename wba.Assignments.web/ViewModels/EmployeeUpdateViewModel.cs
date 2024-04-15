@@ -1,6 +1,6 @@
 ﻿namespace wba.Assignments.web.ViewModels
 {
-    public class EmployeeUpdateViewModel: EmployeeDetailViewModel
+    public class EmployeeUpdateViewModel: EmployeeAddViewModel
     {
     }
 }

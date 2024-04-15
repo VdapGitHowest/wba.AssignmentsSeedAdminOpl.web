@@ -1,0 +1,39 @@
+﻿@model ProjectsIndexViewModel
+
+
+<div class="mb-4">
+    <h1>
+        Project overview
+        <a asp-action="Add" asp-controller="Projects" class="btn btn-success">Add New Project</a>
+    </h1>
+</div>
+
+<div class="container">
+    <div class="row">
+
+        @foreach (ProjectsDetailViewModel project in Model.Projects)
+
+
+
+        {
+            <div class="card m-3" style="max-width: 250px;">
+                <div class="row no-gutters">
+                   
+                    <div class="col-md-12">
+                        <!--tips: add .text-center,.text-right to the .card to change card text alignment-->
+                        <div class="card-body">
+                            <h2>Project @project.Id</h2>
+                            <h5 class="card-title">@project.Name</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Description: @project.Description</h6>
+
+                            <a asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id" class="btn btn-primary">More details</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
