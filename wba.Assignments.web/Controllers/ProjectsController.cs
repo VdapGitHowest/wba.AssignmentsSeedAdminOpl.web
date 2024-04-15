@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using wba.Assignments.core.entities;
 using wba.Assignments.web.Data;
 using wba.Assignments.web.ViewModels;
@@ -35,6 +36,38 @@ namespace wba.Assignments.web.Controllers
 
         }
 
+
+        public IActionResult Details(int id)
+        {
+          
+            var project = _assignmentDBContext.Projects
+                  .Include(p => p.AssignedEmployees)
+                .FirstOrDefault(p => p.Id == id);
+
+
+           ProjectsDetailViewModel projectDetailviewModel = new ProjectsDetailViewModel
+           {
+                Id = project.Id,
+                Name = project.Name,
+                Description = project.Description,
+                StartDate = project.StartDate,
+                EndDate= project.EndDate,
+                //list of assigned projects
+
+                AssignedEmployees = project.AssignedEmployees.Select(
+                    e => new EmployeeDetailViewModel
+                    {
+                        Name = e.Name,
+                        Department = e.Department,
+                        Position = e.Position,
+                   
+                    }).ToList()
+
+            };
+
+            return View(projectDetailviewModel);
+
         }
+    }
     }
 
