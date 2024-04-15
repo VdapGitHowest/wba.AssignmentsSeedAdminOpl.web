@@ -118,7 +118,7 @@ namespace wba.Assignments.web.Controllers
             return RedirectToAction("Index");
         }
 
-        //Add new Employee
+        //Update Selected Employee
 
         [HttpGet]
         public IActionResult Update(int id)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 using wba.Assignments.core.entities;
 using wba.Assignments.web.Data;
 using wba.Assignments.web.ViewModels;
@@ -68,6 +69,123 @@ namespace wba.Assignments.web.Controllers
             return View(projectDetailviewModel);
 
         }
+
+        //Add new project
+        //Add new Employee
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            ProjectsAddViewModel projectsAddViewModel = new ProjectsAddViewModel();
+
+            projectsAddViewModel.StartDate = DateTime.Today;
+            projectsAddViewModel.EndDate = DateTime.Today.AddDays(1);
+
+            projectsAddViewModel.Created = DateTime.Today;
+            
+            return View(projectsAddViewModel);
+
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+
+        public IActionResult Add(ProjectsAddViewModel projectsAddViewModel)
+        {
+            if(ModelState.IsValid)
+            {
+                if(projectsAddViewModel.StartDate>projectsAddViewModel.EndDate ||
+                    projectsAddViewModel.StartDate<DateTime.Today) {
+
+                    ModelState.AddModelError("", "Dates must be in the future");
+                }
+                else
+                {
+
+                
+
+            Project project = new Project
+            {
+                Created = DateTime.Today.ToUniversalTime(),
+                Description = projectsAddViewModel.Description,
+                Name = projectsAddViewModel.Name,
+                StartDate = projectsAddViewModel.StartDate,
+                EndDate = projectsAddViewModel.EndDate,
+
+            };
+
+            _assignmentDBContext.Projects.Add(project);
+            _assignmentDBContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+            }
+            return View();
+        }
+
+        //Delete selected project
+        public IActionResult Delete(int id)
+        {
+            //fetch the to delete project
+            Project project = _assignmentDBContext.Projects
+                .FirstOrDefault(e => e.Id == id);
+
+            //Remove this object from the DBcontext
+            _assignmentDBContext.Projects.Remove(project);
+            //update the database with the new dbContext changes
+            _assignmentDBContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        //Update Selected project
+
+
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            //fetch Employee
+            //needed to fill in the inputs of the from (GET)
+
+
+            var employee = _assignmentDBContext.Employees
+               .FirstOrDefault(e => e.Id == id);
+
+            //map this to the viewmodel
+
+            EmployeeUpdateViewModel employeeUpdateViewModel = new EmployeeUpdateViewModel
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Department = employee.Department,
+                Position = employee.Position
+            };
+
+            //give the viemodel to the view
+
+            return View(employeeUpdateViewModel);
+
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+
+        //retreive the data from the filled in viewmodel (HTTGET)
+        public IActionResult Update(EmployeeUpdateViewModel employeeUpdateViewModel)
+        {
+            //department en position update
+            var updateEmployee = _assignmentDBContext.Employees
+                 .FirstOrDefault(e => e.Id == employeeUpdateViewModel.Id);
+
+            updateEmployee.Department = employeeUpdateViewModel.Department;
+            updateEmployee.Position = employeeUpdateViewModel.Position;
+
+            _assignmentDBContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
     }
-    }
+}
 
