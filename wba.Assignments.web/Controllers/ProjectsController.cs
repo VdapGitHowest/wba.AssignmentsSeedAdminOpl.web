@@ -145,26 +145,26 @@ namespace wba.Assignments.web.Controllers
         [HttpGet]
         public IActionResult Update(int id)
         {
-            //fetch Employee
+            //fetch project
             //needed to fill in the inputs of the from (GET)
 
 
-            var employee = _assignmentDBContext.Employees
+            var project = _assignmentDBContext.Projects
                .FirstOrDefault(e => e.Id == id);
 
             //map this to the viewmodel
 
-            EmployeeUpdateViewModel employeeUpdateViewModel = new EmployeeUpdateViewModel
+            ProjectsUpdateViewModel projectsUpdateViewModel = new ProjectsUpdateViewModel
             {
-                Id = employee.Id,
-                Name = employee.Name,
-                Department = employee.Department,
-                Position = employee.Position
+                Name = project.Name,
+                Description = project.Description,
+                StartDate = project.StartDate,
+                EndDate=project.EndDate
             };
 
             //give the viemodel to the view
 
-            return View(employeeUpdateViewModel);
+            return View(projectsUpdateViewModel);
 
         }
 
@@ -172,20 +172,46 @@ namespace wba.Assignments.web.Controllers
         [AutoValidateAntiforgeryToken]
 
         //retreive the data from the filled in viewmodel (HTTGET)
-        public IActionResult Update(EmployeeUpdateViewModel employeeUpdateViewModel)
+        public IActionResult Update(ProjectsUpdateViewModel projectUpdateViewModel)
         {
-            //department en position update
-            var updateEmployee = _assignmentDBContext.Employees
-                 .FirstOrDefault(e => e.Id == employeeUpdateViewModel.Id);
 
-            updateEmployee.Department = employeeUpdateViewModel.Department;
-            updateEmployee.Position = employeeUpdateViewModel.Position;
+            if (ModelState.IsValid)
+            {
 
-            _assignmentDBContext.SaveChanges();
+                if (projectUpdateViewModel.StartDate > projectUpdateViewModel.EndDate ||
+                    projectUpdateViewModel.StartDate < DateTime.Today)
+                {
 
-            return RedirectToAction("Index");
+                    ModelState.AddModelError("", "Dates must be in the future");
+
+              
+                }
+                else
+                {
+
+                    //department en position update
+                    var updateProject = _assignmentDBContext.Projects
+                         .FirstOrDefault(p => p.Id == projectUpdateViewModel.Id);
+
+                    updateProject.Name = projectUpdateViewModel.Name;
+                    updateProject.Description = projectUpdateViewModel.Description;
+                    updateProject.StartDate = projectUpdateViewModel.StartDate;
+                    updateProject.EndDate = projectUpdateViewModel.EndDate;
+
+                    _assignmentDBContext.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+                
+            }
+
+             return View();
+            }
+
+
+            
         }
 
     }
-}
+
 
